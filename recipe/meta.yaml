@@ -14,6 +14,11 @@ source:
     - fix_data_path.diff
     - fix_babel_test_paths.diff
     - time.patch  # [linux]
+    # openbabel 3.2.1's vendored InChI 1.07.5 references four AuxInfo API
+    # functions from its Win32 DLL export shims but ships no implementation,
+    # so inchi.dll fails to link on MSVC. Harmless elsewhere (the shim block is
+    # #ifdef'd out), so only apply on Windows.
+    - fix_inchi_windows_link.diff  # [win]
 
 build:
   number: 0
