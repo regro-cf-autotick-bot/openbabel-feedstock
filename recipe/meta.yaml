@@ -19,11 +19,6 @@ source:
     # so inchi.dll fails to link on MSVC. Harmless elsewhere (the shim block is
     # #ifdef'd out), so only apply on Windows.
     - fix_inchi_windows_link.diff  # [win]
-    # openbabel 3.2.1's __init__.py only adds <package>/bin to the DLL search
-    # path (the pip-wheel layout). In the conda layout the runtime DLLs live in
-    # %PREFIX%\Library\bin, so the _openbabel extension can't find them and the
-    # import fails. Also add Library\bin to the DLL search on Windows.
-    - fix_python_dll_search_windows.diff  # [win]
 
 build:
   number: 0
