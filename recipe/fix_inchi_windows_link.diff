@@ -1,0 +1,42 @@
+diff --git a/src/formats/libinchi/inchi_dll.c b/src/formats/libinchi/inchi_dll.c
+--- a/src/formats/libinchi/inchi_dll.c
++++ b/src/formats/libinchi/inchi_dll.c
+@@ -3498,6 +3498,38 @@
+ }
+ 
+ 
++/* Open Babel's vendored InChI 1.07.5 declares these AuxInfo helper functions
++ * in inchi_api.h and references them from the Win32 DLL export shims below,
++ * but provides no implementation anywhere in the tree. On non-Windows the shim
++ * block is #ifdef'd out so the omission is harmless, but the MSVC DLL build
++ * fails to link with 4 unresolved externals (LNK2019 -> LNK1120). Open Babel
++ * itself never calls these functions, so define minimal stubs purely to let
++ * inchi.dll link. See upstream report. */
++INCHI_API int INCHI_DECL Get_inchi_Input_FromAuxInfo( char *szInchiAuxInfo,
++                                                      int bDoNotAddH,
++                                                      int bDiffUnkUndfStereo,
++                                                      InchiInpData *pInchiInp )
++{
++    (void)szInchiAuxInfo; (void)bDoNotAddH; (void)bDiffUnkUndfStereo; (void)pInchiInp;
++    return inchi_Ret_ERROR;
++}
++INCHI_API int INCHI_DECL Get_std_inchi_Input_FromAuxInfo( char *szInchiAuxInfo,
++                                                          int bDoNotAddH,
++                                                          InchiInpData *pInchiInp )
++{
++    (void)szInchiAuxInfo; (void)bDoNotAddH; (void)pInchiInp;
++    return inchi_Ret_ERROR;
++}
++INCHI_API void INCHI_DECL Free_inchi_Input( inchi_Input *pInp )
++{
++    (void)pInp;
++}
++INCHI_API void INCHI_DECL Free_std_inchi_Input( inchi_Input *pInp )
++{
++    (void)pInp;
++}
++
++
+ #if( defined( _WIN32 ) && defined( _MSC_VER ) && _MSC_VER >= 800 && defined(_USRDLL) && defined(BUILD_LINK_AS_DLL) )
+ /* Win32 & MS VC ++, compile and link as a DLL */
+ 
