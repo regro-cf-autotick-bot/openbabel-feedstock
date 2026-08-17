@@ -21,7 +21,7 @@ source:
     - fix_inchi_windows_link.diff  # [win]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win and vc<14]
 
 requirements:
